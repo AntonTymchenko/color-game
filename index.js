@@ -1,8 +1,10 @@
 const table = document.querySelector("#field");
 const moveCount = document.querySelector("#moveCount");
 const bestResult = document.querySelector("#bestResult");
+const currentResult = document.querySelector("#currentResult");
 
 let colors = ["red", "green", "blue"];
+console.log(colors);
 
 let rows = 3;
 let cols = 3;
@@ -40,6 +42,7 @@ function createTableRowsAndCols(rows, cols) {
     trCollection.push(tr);
   }
   table.append(...trCollection);
+  countMinResolveMoves();
 }
 createTableRowsAndCols(rows, cols);
 
@@ -66,3 +69,42 @@ function refreshGame() {
   moveCount.textContent = move;
   createTableRowsAndCols(rows, cols);
 }
+
+function countMinResolveMoves() {
+  const tdCollection = document.querySelectorAll("td");
+  const biggestClass = findBiggestClassName(tdCollection);
+  const filteredCollection = [...tdCollection].filter(
+    (item) => item.className !== biggestClass
+  );
+  const computerResult = filteredCollection.reduce((acc, item) => {
+    let indxClass = colors.findIndex((color) => color === item.className);
+    let moves = 0;
+    let doubleColors = [...colors, ...colors];
+    for (let i = indxClass; i < doubleColors.length; i += 1) {
+      if (doubleColors[i] === biggestClass) {
+        acc += moves;
+        return acc;
+      }
+      moves += 1;
+    }
+  }, 0);
+  currentResult.textContent = computerResult;
+}
+
+function findBiggestClassName(tdCollection) {
+  const red = [...tdCollection].filter((item) => item.className === "red");
+  const blue = [...tdCollection].filter((item) => item.className === "blue");
+  const green = [...tdCollection].filter((item) => item.className === "green");
+  const biggestLength = Math.max(red.length, green.length, blue.length);
+  if (red.length === biggestLength) {
+    return "red";
+  }
+  if (green.length === biggestLength) {
+    return "green";
+  }
+  if (blue.length === biggestLength) {
+    return "blue";
+  }
+}
+
+function countMovies() {}
