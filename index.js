@@ -4,7 +4,6 @@ const bestResult = document.querySelector("#bestResult");
 const currentResult = document.querySelector("#currentResult");
 
 let colors = ["red", "green", "blue"];
-console.log(colors);
 
 let rows = 3;
 let cols = 3;
